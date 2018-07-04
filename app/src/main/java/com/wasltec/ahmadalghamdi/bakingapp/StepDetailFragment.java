@@ -70,8 +70,11 @@ public class StepDetailFragment extends android.support.v4.app.Fragment
             } else {
                 mPlayerView.setVisibility(View.GONE);
             }
+
             if (step.getmDescription() != null && !step.getmDescription().isEmpty()) {
                 recipeStepInstruction.setText(step.getmDescription());
+            }else{
+                recipeStepInstruction.setVisibility(View.GONE);
             }
         }
 
