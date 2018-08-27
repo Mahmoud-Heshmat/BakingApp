@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     GridLayoutManager gridLayoutManager;
     int posterWidth = 600;
 
-
+    private static String RECIPES_KEY = "recipes";
     public static ArrayList<Recipe> list = new ArrayList<>();
 
     FrameLayout frameLayout;
@@ -74,30 +75,35 @@ public class MainActivity extends AppCompatActivity {
 
         if(isOnline()) {
             getRecipes();
+
+            if(mTowPane){
+                gridLayoutManager = new GridLayoutManager(context, calculateBestSpanCount(posterWidth));
+                recyclerView.setLayoutManager(gridLayoutManager);
+            }else{
+                linearLayoutManager = new LinearLayoutManager(context);
+                recyclerView.setLayoutManager(linearLayoutManager);
+            }
+
+            adapter = new RecipeAdapter(context);
+            recyclerView.setAdapter(adapter);
+
         }else{
             Snackbar.make(parentView, R.string.network_connection, Snackbar.LENGTH_LONG).show();
         }
 
-        if(mTowPane){
-            gridLayoutManager = new GridLayoutManager(context, calculateBestSpanCount(posterWidth));
-            recyclerView.setLayoutManager(gridLayoutManager);
-        }else{
-            linearLayoutManager = new LinearLayoutManager(context);
-            recyclerView.setLayoutManager(linearLayoutManager);
-        }
-
-        adapter = new RecipeAdapter(context);
-        recyclerView.setAdapter(adapter);
-
-        if (Prefs.loadRecipe(context) != null){
-            Log.d("responseWidget", String.format("Doneeeeeeeeeeeeeeeeeeeee %s", Prefs.loadRecipe(context).getmIngredients().get(0).getmIngredient()));
-        }else{
-            Log.d("responseWidget", "Failedddddddddddddd");
+        if (savedInstanceState != null && savedInstanceState.containsKey(RECIPES_KEY)) {
+            list = savedInstanceState.getParcelableArrayList(RECIPES_KEY);
         }
 
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
 
+        if (list != null && !list.isEmpty())
+            outState.putParcelableArrayList(RECIPES_KEY, (ArrayList<? extends Parcelable>) list);
+    }
 
     private void getRecipes(){
         StringRequest stringRequest = new StringRequest(Request.Method.GET,  Urls.mainURL, new Response.Listener<String>() {
@@ -112,8 +118,6 @@ public class MainActivity extends AppCompatActivity {
                         if (Prefs.loadRecipe(getApplicationContext()) == null) {
                             AppWidgetService.updateWidget(context, list.get(0));
                         }
-
-                        AppWidgetService.updateWidget(context, list.get(1));
                     }
                 }
             }

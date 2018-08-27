@@ -16,7 +16,7 @@
 
     <string name="no_internet">Internet connection appears to be offline</string>
     <string name="data_not_available">Recipes data not available.</string>
-    
+
     <string name="step">Step %d</string>
     <string name="widget_recipe_key">widget_recipe_key</string>
     <string name="added_to_widget">Recipe %s added to widget</string>
