@@ -1,18 +1,21 @@
 package com.wasltec.ahmadalghamdi.bakingapp;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.wasltec.ahmadalghamdi.bakingapp.Activities.MainActivity;
-import com.wasltec.ahmadalghamdi.bakingapp.adapters.StepsAdapter;
 import com.wasltec.ahmadalghamdi.bakingapp.fragments.StepFragment;
 import com.wasltec.ahmadalghamdi.bakingapp.models.Steps;
 
@@ -22,10 +25,13 @@ import butterknife.ButterKnife;
 public class IngedStepsActivity extends AppCompatActivity{
 
     private static String STEP_TAG = "Steps";
+    private static String INGREDIENT_TAG = "ingredient";
     private static String STEP_DETAIL_TAG = "StepDetails";
     @BindView(R.id.frameLayout) FrameLayout frameLayout;
 
     private Boolean mTowPane = false;
+
+    int position = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +47,12 @@ public class IngedStepsActivity extends AppCompatActivity{
 
         Bundle bundle = getIntent().getExtras();
         if(bundle!=null){
-            int position = bundle.getInt("index");
+            position = bundle.getInt("index");
             StepFragment stepFragment = new StepFragment();
             addStepFragments(stepFragment, position, STEP_TAG);
+
+            IngredientFragment ingredientFragment = new IngredientFragment();
+            addIngredientFragments(ingredientFragment, position, INGREDIENT_TAG);
         }
 
     }
@@ -55,6 +64,17 @@ public class IngedStepsActivity extends AppCompatActivity{
         fragment.setArguments(bundle);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.stepsContainer, fragment, tag);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
+    private void addIngredientFragments(Fragment fragment, int position , String tag) {
+        Bundle bundle = new Bundle();
+        bundle.putInt("index", position);
+        bundle.putBoolean("isTowPane", mTowPane);
+        fragment.setArguments(bundle);
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.ingredientContainer, fragment, tag);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
@@ -91,6 +111,24 @@ public class IngedStepsActivity extends AppCompatActivity{
                 getSupportActionBar().show();
             }
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.widget, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_add_to_widget) {
+            AppWidgetService.updateWidget(this, MainActivity.list.get(position));
+            Toast.makeText(getApplicationContext(), "Added To widget0", Toast.LENGTH_LONG).show();
+            return true;
+        } else
+            return super.onOptionsItemSelected(item);
     }
 
     @Override

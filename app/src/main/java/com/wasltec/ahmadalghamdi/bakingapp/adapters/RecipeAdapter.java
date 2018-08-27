@@ -8,10 +8,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.wasltec.ahmadalghamdi.bakingapp.IngedStepsActivity;
 import com.wasltec.ahmadalghamdi.bakingapp.R;
@@ -47,6 +49,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
                 Intent intent = new Intent(context, IngedStepsActivity.class);
                 intent.putExtra("index", position);
                 context.startActivity(intent);
+                //Toast.makeText(context, recipe.getmName(), Toast.LENGTH_LONG).show();
             }
         });
     }

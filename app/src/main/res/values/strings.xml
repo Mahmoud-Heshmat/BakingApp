@@ -8,4 +8,17 @@
     <string name="quantity">Quantity</string>
     <string name="ingredients">Ingredients</string>
     <string name="measure">Measure</string>
+    <string name="leftprac">)</string>
+    <string name="rightprac">(</string>
+    <string name="previous_step">Previous Step</string>
+    <string name="appwidget_text">HI Heshmat</string>
+    <string name="add_widget">Add widget</string>
+
+    <string name="no_internet">Internet connection appears to be offline</string>
+    <string name="data_not_available">Recipes data not available.</string>
+    
+    <string name="step">Step %d</string>
+    <string name="widget_recipe_key">widget_recipe_key</string>
+    <string name="added_to_widget">Recipe %s added to widget</string>
+    <string name="add_to_widget">Add to Widget</string>
 </resources>

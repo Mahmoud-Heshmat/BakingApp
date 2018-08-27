@@ -7,9 +7,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/backingicon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/backingicon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
@@ -22,8 +22,24 @@
             </intent-filter>
         </activity>
         <activity android:name=".IngredientsActivity" />
-        <activity android:name=".IngedStepsActivity"
+        <activity
+            android:name=".IngedStepsActivity"
             android:configChanges="orientation|screenSize|keyboardHidden" />
+
+        <receiver android:name=".ingredientWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/ingredient_widget_info" />
+        </receiver>
+
+        <service
+            android:name=".AppWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
     </application>
 
 </manifest>

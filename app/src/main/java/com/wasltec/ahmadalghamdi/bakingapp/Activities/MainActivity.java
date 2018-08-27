@@ -4,7 +4,11 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.Snackbar;
+import android.support.test.espresso.IdlingResource;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +26,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.wasltec.ahmadalghamdi.bakingapp.AppWidgetService;
 import com.wasltec.ahmadalghamdi.bakingapp.R;
 import com.wasltec.ahmadalghamdi.bakingapp.RecipeFragment;
 import com.wasltec.ahmadalghamdi.bakingapp.adapters.RecipeAdapter;
@@ -29,6 +34,7 @@ import com.wasltec.ahmadalghamdi.bakingapp.api.Singleton;
 import com.wasltec.ahmadalghamdi.bakingapp.api.Urls;
 import com.wasltec.ahmadalghamdi.bakingapp.models.Recipe;
 import com.wasltec.ahmadalghamdi.bakingapp.utilits.JsonUtils;
+import com.wasltec.ahmadalghamdi.bakingapp.utilits.Prefs;
 
 import java.util.ArrayList;
 
@@ -44,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     LinearLayoutManager linearLayoutManager;
     GridLayoutManager gridLayoutManager;
     int posterWidth = 600;
+
 
     public static ArrayList<Recipe> list = new ArrayList<>();
 
@@ -82,18 +89,31 @@ public class MainActivity extends AppCompatActivity {
         adapter = new RecipeAdapter(context);
         recyclerView.setAdapter(adapter);
 
+        if (Prefs.loadRecipe(context) != null){
+            Log.d("responseWidget", String.format("Doneeeeeeeeeeeeeeeeeeeee %s", Prefs.loadRecipe(context).getmIngredients().get(0).getmIngredient()));
+        }else{
+            Log.d("responseWidget", "Failedddddddddddddd");
+        }
+
     }
+
 
 
     private void getRecipes(){
         StringRequest stringRequest = new StringRequest(Request.Method.GET,  Urls.mainURL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                //Log.d("response", response);
+                Log.d("response", response);
                 if (!response.isEmpty()){
                     list = JsonUtils.parseRecipesJson(response, list);
                     if(!list.isEmpty()){
                         adapter.update_data(list);
+                        // Set the default recipe for the widget
+                        if (Prefs.loadRecipe(getApplicationContext()) == null) {
+                            AppWidgetService.updateWidget(context, list.get(0));
+                        }
+
+                        AppWidgetService.updateWidget(context, list.get(1));
                     }
                 }
             }

@@ -1,7 +1,9 @@
-package com.wasltec.ahmadalghamdi.bakingapp.fragments;
+package com.wasltec.ahmadalghamdi.bakingapp;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -10,28 +12,29 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.wasltec.ahmadalghamdi.bakingapp.Activities.MainActivity;
-import com.wasltec.ahmadalghamdi.bakingapp.R;
-import com.wasltec.ahmadalghamdi.bakingapp.RecipeFragment;
-import com.wasltec.ahmadalghamdi.bakingapp.adapters.StepsAdapter;
+import com.wasltec.ahmadalghamdi.bakingapp.adapters.RecipeAdapter;
 import com.wasltec.ahmadalghamdi.bakingapp.models.Ingredients;
-import com.wasltec.ahmadalghamdi.bakingapp.models.Steps;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class StepFragment extends android.support.v4.app.Fragment {
+/**
+ * Created by Mahmoud Heshmat on 8/18/2018.
+ */
 
-    static int position = 1;
-    static Boolean mTowPane;
+public class IngredientFragment extends android.support.v4.app.Fragment  {
 
-    ArrayList<Steps> stepsArrayList = new ArrayList<>();
+    public static int position = 0;
+    public static Boolean mTowPane = false;
+
     ArrayList<Ingredients> ingredientsArrayList = new ArrayList<>();
 
     @BindView(R.id.recycle_view) RecyclerView recyclerView;
-    private StepsAdapter adapter;
+    private IngredientsAdapter adapter;
     LinearLayoutManager linearLayoutManager;
+    Context context;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,20 +48,17 @@ public class StepFragment extends android.support.v4.app.Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.fragment_step, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_ingredient, container, false);
         ButterKnife.bind(this, rootView);
 
-        linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(linearLayoutManager);
-        adapter = new StepsAdapter(getContext(), mTowPane);
+        adapter = new IngredientsAdapter(context);
         recyclerView.setAdapter(adapter);
         recyclerView.setNestedScrollingEnabled(false);
-
-        stepsArrayList = MainActivity.list.get(position).getmSteps();
         ingredientsArrayList = MainActivity.list.get(position).getmIngredients();
-
-        if(!stepsArrayList.isEmpty()) {
-            adapter.update_data(stepsArrayList);
+        if(!ingredientsArrayList.isEmpty()) {
+            adapter.update_data(ingredientsArrayList);
         }
 
         return rootView;

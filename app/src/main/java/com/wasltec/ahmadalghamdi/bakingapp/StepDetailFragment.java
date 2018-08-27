@@ -30,8 +30,11 @@ import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.wasltec.ahmadalghamdi.bakingapp.Activities.MainActivity;
 import com.wasltec.ahmadalghamdi.bakingapp.adapters.StepsAdapter;
 import com.wasltec.ahmadalghamdi.bakingapp.models.Steps;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,13 +46,18 @@ public class StepDetailFragment extends android.support.v4.app.Fragment
     @BindView(R.id.exoplayer) SimpleExoPlayerView mPlayerView;
     @BindView(R.id.recipeStepInstruction) TextView recipeStepInstruction;
     @BindView(R.id.nextStepBtn) Button nextStepBtn;
+    @BindView(R.id.previousStepBtn) Button previousStepBtn;
 
     Steps step;
     int position;
 
+    ArrayList<Steps> stepsArrayList = new ArrayList<>();
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        position = 0;
 
         step = (Steps) getArguments().getSerializable("step");
         position = getArguments().getInt("index");
@@ -62,13 +70,26 @@ public class StepDetailFragment extends android.support.v4.app.Fragment
         final View rootView = inflater.inflate(R.layout.fragment_step_detail, container, false);
         ButterKnife.bind(this, rootView);
 
-        nextStepBtn.setOnClickListener(this);
+        stepsArrayList = MainActivity.list.get(position).getmSteps();
 
+        nextStepBtn.setOnClickListener(this);
+        previousStepBtn.setOnClickListener(this);
+
+        prepareStep(step);
+
+        return rootView;
+    }
+
+    private void prepareStep(Steps step){
         if (step != null) {
+            Log.d("responseSteps", "   " + step.getmDescription());
+            Log.d("responseSteps", "   " + step.getmVideoURL());
             if (step.getmVideoURL() != null && !step.getmVideoURL().isEmpty()) {
+                mPlayerView.setVisibility(View.VISIBLE);
                 initializePlayer(Uri.parse(step.getmVideoURL()));
             } else {
                 mPlayerView.setVisibility(View.GONE);
+                mExoPlayer.stop();
             }
 
             if (step.getmDescription() != null && !step.getmDescription().isEmpty()) {
@@ -77,8 +98,6 @@ public class StepDetailFragment extends android.support.v4.app.Fragment
                 recipeStepInstruction.setVisibility(View.GONE);
             }
         }
-
-        return rootView;
     }
 
     private void initializePlayer(Uri mediaUri) {
@@ -93,13 +112,19 @@ public class StepDetailFragment extends android.support.v4.app.Fragment
             mExoPlayer.addListener(this);
 
             // Prepare the MediaSource.
-            String userAgent = Util.getUserAgent(getContext(), "ClassicalMusicQuiz");
-            MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
-                    getContext(), userAgent), new DefaultExtractorsFactory(), null, null);
-            mExoPlayer.prepare(mediaSource);
-            mExoPlayer.setPlayWhenReady(true);
+            playVideo(mediaUri);
+        }else{
+            // Prepare the MediaSource.
+            playVideo(mediaUri);
         }
+    }
 
+    private void playVideo(Uri mediaUri){
+        String userAgent = Util.getUserAgent(getContext(), "ClassicalMusicQuiz");
+        MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
+                getContext(), userAgent), new DefaultExtractorsFactory(), null, null);
+        mExoPlayer.prepare(mediaSource);
+        mExoPlayer.setPlayWhenReady(true);
     }
 
     @Override
@@ -113,7 +138,19 @@ public class StepDetailFragment extends android.support.v4.app.Fragment
 
     @Override
     public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.nextStepBtn:
+                position += 1;
+                Log.d("responseSS", position + " bb " + stepsArrayList.size());
+                if (position <= stepsArrayList.size()){
+                    prepareStep(stepsArrayList.get(position));
+                }
 
+                break;
+            case R.id.previousStepBtn:
+
+                break;
+        }
     }
 
     @Override

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.wasltec.ahmadalghamdi.bakingapp.Activities.MainActivity;
 import com.wasltec.ahmadalghamdi.bakingapp.adapters.StepsAdapter;
 import com.wasltec.ahmadalghamdi.bakingapp.models.Ingredients;
 import com.wasltec.ahmadalghamdi.bakingapp.models.Steps;
@@ -41,7 +42,7 @@ public class IngredientsActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
             position = bundle.getInt("index");
-            ingredientsArrayList = RecipeFragment.list.get(position).getmIngredients();
+            ingredientsArrayList = MainActivity.list.get(position).getmIngredients();
             if(!ingredientsArrayList.isEmpty()) {
                 adapter.update_data(ingredientsArrayList);
             }

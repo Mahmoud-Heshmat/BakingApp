@@ -8,11 +8,13 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.wasltec.ahmadalghamdi.bakingapp.Activities.MainActivity;
 import com.wasltec.ahmadalghamdi.bakingapp.IngredientsActivity;
 import com.wasltec.ahmadalghamdi.bakingapp.R;
 import com.wasltec.ahmadalghamdi.bakingapp.StepDetailFragment;
@@ -48,9 +50,9 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder>{
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Log.d("responseee", position +  "  " + MainActivity.list.get(position).getmSteps().size() + "  " + steps.getmDescription());
                 StepDetailFragment stepDetailFragment = new StepDetailFragment();
                 addCenterFragments(stepDetailFragment, position, steps, TAG);
-
             }
         });
     }
@@ -96,7 +98,7 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder>{
         if(isTowPane){
             fragmentTransaction.replace(R.id.stepDetailContainer, fragment, tag);
         }else {
-            fragmentTransaction.replace(R.id.stepsContainer, fragment, tag);
+            fragmentTransaction.replace(R.id.frameLayout, fragment, tag);
         }
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
