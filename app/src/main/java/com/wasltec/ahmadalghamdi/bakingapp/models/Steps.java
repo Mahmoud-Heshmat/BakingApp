@@ -7,21 +7,21 @@ import java.io.Serializable;
 
 public class Steps implements Serializable {
 
-    private String mId;
-    private String mShortDescription;
-    private String mDescription;
-    private String mVideoURL;
-    private String mThumbnailURL;
+    private String id;
+    private String shortDescription;
+    private String description;
+    private String videoURL;
+    private String thumbnailURL;
 
-    public Steps(String mId, String mShortDescription, String mDescription, String mVideoURL, String mThumbnailURL) {
-        this.mId = mId;
-        this.mShortDescription = mShortDescription;
-        this.mDescription = mDescription;
-        this.mVideoURL = mVideoURL;
-        this.mThumbnailURL = mThumbnailURL;
+    public Steps(String id, String shortDescription, String description, String videoURL, String thumbnailURL) {
+        this.id = id;
+        this.shortDescription = shortDescription;
+        this.description = description;
+        this.videoURL = videoURL;
+        this.thumbnailURL = thumbnailURL;
     }
 
-//    public Steps(Parcel in) {
+    //    public Steps(Parcel in) {
 //        mId = in.readString();
 //        mShortDescription = in.readString();
 //        mDescription = in.readString();
@@ -55,42 +55,42 @@ public class Steps implements Serializable {
 //    };
 
     public String getmId() {
-        return mId;
+        return id;
     }
 
     public void setmId(String mId) {
-        this.mId = mId;
+        this.id = mId;
     }
 
     public String getmShortDescription() {
-        return mShortDescription;
+        return shortDescription;
     }
 
     public void setmShortDescription(String mShortDescription) {
-        this.mShortDescription = mShortDescription;
+        this.shortDescription = mShortDescription;
     }
 
     public String getmDescription() {
-        return mDescription;
+        return description;
     }
 
     public void setmDescription(String mDescription) {
-        this.mDescription = mDescription;
+        this.description = mDescription;
     }
 
     public String getmVideoURL() {
-        return mVideoURL;
+        return videoURL;
     }
 
     public void setmVideoURL(String mVideoURL) {
-        this.mVideoURL = mVideoURL;
+        this.videoURL = mVideoURL;
     }
 
     public String getmThumbnailURL() {
-        return mThumbnailURL;
+        return thumbnailURL;
     }
 
     public void setmThumbnailURL(String mThumbnailURL) {
-        this.mThumbnailURL = mThumbnailURL;
+        this.thumbnailURL = mThumbnailURL;
     }
 }

@@ -27,20 +27,31 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.wasltec.ahmadalghamdi.bakingapp.ApiClient;
+import com.wasltec.ahmadalghamdi.bakingapp.ApiInterface;
 import com.wasltec.ahmadalghamdi.bakingapp.AppWidgetService;
 import com.wasltec.ahmadalghamdi.bakingapp.R;
 import com.wasltec.ahmadalghamdi.bakingapp.RecipeFragment;
 import com.wasltec.ahmadalghamdi.bakingapp.adapters.RecipeAdapter;
 import com.wasltec.ahmadalghamdi.bakingapp.api.Singleton;
 import com.wasltec.ahmadalghamdi.bakingapp.api.Urls;
+import com.wasltec.ahmadalghamdi.bakingapp.models.Ingredients;
 import com.wasltec.ahmadalghamdi.bakingapp.models.Recipe;
+import com.wasltec.ahmadalghamdi.bakingapp.models.Steps;
 import com.wasltec.ahmadalghamdi.bakingapp.utilits.JsonUtils;
 import com.wasltec.ahmadalghamdi.bakingapp.utilits.Prefs;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -105,13 +116,13 @@ public class MainActivity extends AppCompatActivity {
             outState.putParcelableArrayList(RECIPES_KEY, (ArrayList<? extends Parcelable>) list);
     }
 
-    private void getRecipes(){
+    private void getRecipeds(){
         StringRequest stringRequest = new StringRequest(Request.Method.GET,  Urls.mainURL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d("response", response);
                 if (!response.isEmpty()){
-                    list = JsonUtils.parseRecipesJson(response, list);
+                    list = JsonUtils.parseRecipesJson(response);
                     if(!list.isEmpty()){
                         adapter.update_data(list);
                         // Set the default recipe for the widget
@@ -128,6 +139,38 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         Singleton.getInstance(context).addToRequestQueue(stringRequest);
+    }
+
+    private void getRecipes(){
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<ArrayList<Recipe>> call = apiService.getRecipes();
+
+        call.enqueue(new Callback<ArrayList<Recipe>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Recipe>> call, retrofit2.Response<ArrayList<Recipe>> response) {
+                System.out.println("onResponse: " + response.errorBody());
+                if (response.isSuccessful()){
+                    if (response.code() == 200){
+                        list = response.body();
+                        if(!list.isEmpty()){
+                            adapter.update_data(list);
+                            // Set the default recipe for the widget
+                            AppWidgetService.updateWidget(context, list.get(0));
+                        }
+                        Log.d("responserecipesss",response.body().get(0).getmName() );
+                    }else{
+                        System.out.println("response code != 200, possibly unsuccessful server request");
+                    }
+                }else{
+                    System.out.println("response.isSuccessful() = false");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Recipe>> call, Throwable t) {
+                System.out.println("onFailure: " + t);
+            }
+        });
     }
 
     public boolean isOnline() {

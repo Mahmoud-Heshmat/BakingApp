@@ -11,9 +11,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.wasltec.ahmadalghamdi.bakingapp.Activities.MainActivity;
 import com.wasltec.ahmadalghamdi.bakingapp.adapters.RecipeAdapter;
+import com.wasltec.ahmadalghamdi.bakingapp.api.Singleton;
+import com.wasltec.ahmadalghamdi.bakingapp.api.Urls;
 import com.wasltec.ahmadalghamdi.bakingapp.models.Ingredients;
+import com.wasltec.ahmadalghamdi.bakingapp.models.Recipe;
+import com.wasltec.ahmadalghamdi.bakingapp.utilits.JsonUtils;
+import com.wasltec.ahmadalghamdi.bakingapp.utilits.Prefs;
 
 import java.util.ArrayList;
 
@@ -26,10 +35,11 @@ import butterknife.ButterKnife;
 
 public class IngredientFragment extends android.support.v4.app.Fragment  {
 
-    public static int position = 0;
+    public static int position = 1;
     public static Boolean mTowPane = false;
 
     ArrayList<Ingredients> ingredientsArrayList = new ArrayList<>();
+    public static ArrayList<Recipe> list = new ArrayList<>();
 
     @BindView(R.id.recycle_view) RecyclerView recyclerView;
     private IngredientsAdapter adapter;
@@ -42,7 +52,7 @@ public class IngredientFragment extends android.support.v4.app.Fragment  {
 
         position = getArguments().getInt("index");
         mTowPane = getArguments().getBoolean("isTowPane");
-        Log.d("responsePos", "  " + position);
+        Log.d("responsePosssss", "  " + position);
     }
 
     @Override
@@ -57,11 +67,12 @@ public class IngredientFragment extends android.support.v4.app.Fragment  {
         recyclerView.setAdapter(adapter);
         recyclerView.setNestedScrollingEnabled(false);
         ingredientsArrayList = MainActivity.list.get(position).getmIngredients();
+        //ingredientsArrayList = JsonUtils.recipeList.get(position).getmIngredients();
         if(!ingredientsArrayList.isEmpty()) {
             adapter.update_data(ingredientsArrayList);
         }
-
         return rootView;
     }
+
 
 }

@@ -62,7 +62,7 @@ public class RecipeFragment extends android.support.v4.app.Fragment  {
             public void onResponse(String response) {
                 //Log.d("response", response);
                 if (!response.isEmpty()){
-                    list = JsonUtils.parseRecipesJson(response, list);
+                    list = JsonUtils.parseRecipesJson(response);
                     if(!list.isEmpty()){
                         adapter.update_data(list);
                     }

@@ -75,6 +75,8 @@ public class StepDetailFragment extends android.support.v4.app.Fragment
         nextStepBtn.setOnClickListener(this);
         previousStepBtn.setOnClickListener(this);
 
+        Log.d("responseeeeeStep", "   " + step.getmDescription());
+
         prepareStep(step);
 
         return rootView;

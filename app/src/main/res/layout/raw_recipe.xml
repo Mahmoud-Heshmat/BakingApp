@@ -13,16 +13,54 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/dim50">
+        android:padding="20dp">
 
-        <TextView
-            android:id="@+id/recipe"
-            tools:text="@string/recipeCard"
-            android:textSize="@dimen/dim25"
-            android:layout_centerInParent="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"/>
+        <ImageView
+            android:id="@+id/icon"
+            android:src="@drawable/backingicon"
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
+
+        <LinearLayout
+            android:layout_toEndOf="@+id/icon"
+            android:layout_toRightOf="@+id/icon"
+            android:orientation="vertical"
+            android:layout_marginStart="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/recipe"
+                tools:text="@string/recipeCard"
+                android:textSize="@dimen/dim25"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/servicing"
+                    android:text="@string/serving"
+                    android:textSize="@dimen/dim15"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/servicingNum"
+                    android:layout_toEndOf="@+id/servicing"
+                    android:layout_toRightOf="@+id/servicing"
+                    tools:text="@string/num"
+                    android:textSize="@dimen/dim15"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>

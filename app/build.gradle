@@ -51,5 +51,10 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-core:2.9.4'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.4'
 
+    // retrofit, gson
+    compile 'com.google.code.gson:gson:2.8.0'
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+
     compile 'com.google.code.gson:gson:2.8.0'
 }

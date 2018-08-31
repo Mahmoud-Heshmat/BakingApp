@@ -20,6 +20,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.RemoteViewsService;
 
 import com.wasltec.ahmadalghamdi.bakingapp.models.Recipe;
@@ -29,7 +30,7 @@ public class AppWidgetService extends RemoteViewsService {
 
     public static void updateWidget(Context context, Recipe recipe) {
         Prefs.saveRecipe(context, recipe);
-
+        Log.d("responseeeeeeeeeeeeee", recipe.getmName());
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, ingredientWidget.class));
         ingredientWidget.updateAppWidgets(context, appWidgetManager, appWidgetIds);

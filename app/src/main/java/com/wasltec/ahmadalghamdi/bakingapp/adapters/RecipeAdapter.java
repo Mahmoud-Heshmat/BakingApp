@@ -42,6 +42,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
 
         final Recipe recipe = items.get(position);
         holder.recipeText.setText(recipe.getmName());
+        holder.serving.setText(recipe.getmServings());
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,11 +78,13 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView recipeText;
+        private TextView serving;
         private CardView cardView;
 
         public ViewHolder(View itemView) {
             super(itemView);
             recipeText =  itemView.findViewById(R.id.recipe);
+            serving =  itemView.findViewById(R.id.servicingNum);
             cardView =  itemView.findViewById(R.id.card_view);
         }
     }

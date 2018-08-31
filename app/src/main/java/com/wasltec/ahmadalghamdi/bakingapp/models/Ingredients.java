@@ -5,21 +5,20 @@ import android.os.Parcelable;
 
 public class Ingredients implements Parcelable {
 
-    private String mQuantity;
-    private String mMeasure;
-    private String mIngredient;
+    private String quantity;
+    private String measure;
+    private String ingredient;
 
-    public Ingredients(String mQuantity, String mMeasure, String mIngredient){
-
-        this.mQuantity = mQuantity;
-        this.mMeasure = mMeasure;
-        this.mIngredient = mIngredient;
+    public Ingredients(String quantity, String measure, String ingredient) {
+        this.quantity = quantity;
+        this.measure = measure;
+        this.ingredient = ingredient;
     }
 
     public Ingredients(Parcel in) {
-        mQuantity = in.readString();
-        mMeasure = in.readString();
-        mIngredient = in.readString();
+        quantity = in.readString();
+        measure = in.readString();
+        ingredient = in.readString();
     }
 
     @Override
@@ -29,9 +28,9 @@ public class Ingredients implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mQuantity);
-        dest.writeString(mMeasure);
-        dest.writeString(mIngredient);
+        dest.writeString(quantity);
+        dest.writeString(measure);
+        dest.writeString(ingredient);
     }
 
     // This is to de-serialize the object
@@ -46,26 +45,26 @@ public class Ingredients implements Parcelable {
     };
 
     public String getmQuantity() {
-        return mQuantity;
+        return quantity;
     }
 
     public void setmQuantity(String mQuantity) {
-        this.mQuantity = mQuantity;
+        this.quantity = mQuantity;
     }
 
     public String getmMeasure() {
-        return mMeasure;
+        return measure;
     }
 
     public void setmMeasure(String mMeasure) {
-        this.mMeasure = mMeasure;
+        this.measure = mMeasure;
     }
 
     public String getmIngredient() {
-        return mIngredient;
+        return ingredient;
     }
 
     public void setmIngredient(String mIngredient) {
-        this.mIngredient = mIngredient;
+        this.ingredient = mIngredient;
     }
 }
