@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
                             // Set the default recipe for the widget
                             AppWidgetService.updateWidget(context, list.get(0));
                         }
-                        Log.d("responserecipesss",response.body().get(0).getmName() );
+
                     }else{
                         System.out.println("response code != 200, possibly unsuccessful server request");
                     }

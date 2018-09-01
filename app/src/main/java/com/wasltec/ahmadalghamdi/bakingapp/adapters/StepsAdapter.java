@@ -12,8 +12,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.wasltec.ahmadalghamdi.bakingapp.Activities.MainActivity;
 import com.wasltec.ahmadalghamdi.bakingapp.IngredientsActivity;
 import com.wasltec.ahmadalghamdi.bakingapp.R;
@@ -46,6 +48,18 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder>{
 
         final Steps steps = items.get(position);
         holder.stepText.setText(steps.getmShortDescription());
+
+        if (steps.getmThumbnailURL().isEmpty()){
+            holder.stepImage.setImageResource(R.drawable.backingicon);
+        }else{
+            Picasso.with(context)
+                    .load(steps.getmThumbnailURL())
+                    .placeholder(R.drawable.backingicon)
+                    .error(R.drawable.ic_error_black_24dp)
+                    .into(holder.stepImage);
+        }
+
+
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,11 +94,13 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder>{
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView stepText;
+        private ImageView stepImage;
         private CardView cardView;
 
         public ViewHolder(View itemView) {
             super(itemView);
             stepText =  itemView.findViewById(R.id.step);
+            stepImage =  itemView.findViewById(R.id.icon);
             cardView =  itemView.findViewById(R.id.card_view);
         }
     }

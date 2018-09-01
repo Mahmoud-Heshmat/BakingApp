@@ -61,8 +61,6 @@ public class RecipesTest {
 
         ViewInteraction recyclerView = onView(withId(R.id.recycle_view));
         recyclerView.perform(click());
-
-
     }
 
 }

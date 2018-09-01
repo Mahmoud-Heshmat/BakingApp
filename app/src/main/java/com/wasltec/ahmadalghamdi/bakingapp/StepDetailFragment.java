@@ -1,9 +1,13 @@
 package com.wasltec.ahmadalghamdi.bakingapp;
 
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.constraint.Placeholder;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -30,6 +35,7 @@ import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.squareup.picasso.Picasso;
 import com.wasltec.ahmadalghamdi.bakingapp.Activities.MainActivity;
 import com.wasltec.ahmadalghamdi.bakingapp.adapters.StepsAdapter;
 import com.wasltec.ahmadalghamdi.bakingapp.models.Steps;
@@ -47,6 +53,7 @@ public class StepDetailFragment extends android.support.v4.app.Fragment
     @BindView(R.id.recipeStepInstruction) TextView recipeStepInstruction;
     @BindView(R.id.nextStepBtn) Button nextStepBtn;
     @BindView(R.id.previousStepBtn) Button previousStepBtn;
+    @BindView(R.id.placeholderError) ImageView placeholderImage;
 
     Steps step;
     int position;
@@ -75,7 +82,7 @@ public class StepDetailFragment extends android.support.v4.app.Fragment
         nextStepBtn.setOnClickListener(this);
         previousStepBtn.setOnClickListener(this);
 
-        Log.d("responseeeeeStep", "   " + step.getmDescription());
+        Log.d("responseThum", "  " + step.getmThumbnailURL());
 
         prepareStep(step);
 
@@ -88,7 +95,21 @@ public class StepDetailFragment extends android.support.v4.app.Fragment
             Log.d("responseSteps", "   " + step.getmVideoURL());
             if (step.getmVideoURL() != null && !step.getmVideoURL().isEmpty()) {
                 mPlayerView.setVisibility(View.VISIBLE);
+                placeholderImage.setVisibility(View.GONE);
                 initializePlayer(Uri.parse(step.getmVideoURL()));
+
+            }else if (step.getmThumbnailURL() != null && !step.getmThumbnailURL().isEmpty()){
+                placeholderImage.setVisibility(View.VISIBLE);
+                mPlayerView.setVisibility(View.GONE);
+                mExoPlayer.stop();
+
+                String path = step.getmThumbnailURL();
+                Bitmap thumb = ThumbnailUtils.createVideoThumbnail(path,
+                        MediaStore.Images.Thumbnails.MINI_KIND);
+
+                placeholderImage.setImageBitmap(thumb);
+                Log.d("responseImage", "response"   + " " + step.getmThumbnailURL());
+
             } else {
                 mPlayerView.setVisibility(View.GONE);
                 mExoPlayer.stop();
@@ -150,7 +171,11 @@ public class StepDetailFragment extends android.support.v4.app.Fragment
 
                 break;
             case R.id.previousStepBtn:
-
+                position -= 1;
+                Log.d("responseSS", position + " bb " + stepsArrayList.size());
+                if (position <= stepsArrayList.size()){
+                    prepareStep(stepsArrayList.get(position));
+                }
                 break;
         }
     }

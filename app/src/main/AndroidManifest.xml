@@ -13,19 +13,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Activities.MainActivity"
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|screenSize|keyboardHidden">
+            android:name=".Activities.MainActivity">
+            <!--android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|keyboardHidden"-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".IngredientsActivity" />
+        <activity android:name=".IngredientsActivity"
+            android:parentActivityName=".Activities.MainActivity"/>
         <activity
             android:name=".IngedStepsActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden" />
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:parentActivityName=".Activities.MainActivity"/>
 
         <receiver android:name=".ingredientWidget">
             <intent-filter>
